@@ -32,14 +32,16 @@ func main() {
 		}
 
 		command := strings.Split(update.Message.Text, " ")
-
+		command[0] = strings.ToUpper(command[0])
 		switch command[0] {
 		case "ADD":
 			ADD(command, bot, &update)
 		case "SUB":
 			SUB(command, bot, &update)
 		case "DEL":
+			DEL(command, bot, &update)
 		case "SHOW":
+			SHOW(bot, &update)
 		default:
 			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, "Command has`t been found"))
 		}
