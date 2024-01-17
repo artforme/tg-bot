@@ -66,7 +66,12 @@ func SHOW(bot *tgbotapi.BotAPI, update *tgbotapi.Update) {
 	msg := "Your wallet contains:\n"
 
 	for key, value := range db[update.Message.Chat.ID] {
-		msg += fmt.Sprintf("%s: %f\n", key, value)
+		price, err := getPrice(key, bot, update)
+		if err != nil {
+			bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, err.Error()))
+			return
+		}
+		msg += fmt.Sprintf("%s: %f or %f rub\n", key, value, price*value)
 	}
 	bot.Send(tgbotapi.NewMessage(update.Message.Chat.ID, msg))
 }
